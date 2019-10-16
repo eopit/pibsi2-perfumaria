@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane id="AnchorPane" prefHeight="560.0" prefWidth="516.0" style="-fx-background-color: #202020;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.senac.perfumaria.gui.TelaLoginController">
+   <children>
+      <HBox alignment="CENTER_RIGHT" layoutX="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="516.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="30.0" textAlignment="CENTER">
+               <graphic>
+                  <FontAwesomeIconView fill="RED" glyphName="CLOSE" onMouseClicked="#closeWindow" size="20" style="-fx-cursor: hand;" textAlignment="CENTER" />
+               </graphic>
+            </Label>
+         </children>
+      </HBox>
+      <ImageView fitHeight="122.0" fitWidth="250.0" layoutX="133.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="133.0" AnchorPane.rightAnchor="133.0">
+         <image>
+            <Image url="@images/logo.png" />
+         </image>
+      </ImageView>
+      <JFXTextField fx:id="lbUsuario" focusColor="#23ff00" layoutX="177.0" layoutY="302.0" prefHeight="25.0" prefWidth="163.0" promptText="usuário" stylesheets="@loginCSS.css" unFocusColor="#434343" />
+      <FontAwesomeIconView fill="#23ff00" glyphName="USER" layoutX="325.0" layoutY="320.0" size="18" />
+      <FontAwesomeIconView fill="#23ff00" glyphName="LOCK" layoutX="325.0" layoutY="368.0" size="18" />
+      <JFXPasswordField fx:id="lbSenha" focusColor="#23ff00" layoutX="177.0" layoutY="349.0" prefHeight="25.0" prefWidth="163.0" promptText="senha" stylesheets="@loginCSS.css" />
+      <JFXButton layoutX="223.0" layoutY="399.0" onAction="#btEntrar" prefHeight="25.0" prefWidth="59.0" ripplerFill="#23ff00" text="Entrar" textAlignment="CENTER" textFill="WHITE" underline="true" />
+   </children>
+</AnchorPane>

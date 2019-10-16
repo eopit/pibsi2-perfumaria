@@ -1,0 +1,17 @@
+.tab {
+    -fx-pref-width : 317;
+    -fx-stroke: #23ff00;
+    -fx-stroke-width: 3pt;
+}
+
+.tab-header-background {
+    -fx-background-color: #282828;
+}
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-border-color: #23ff00;
+}
+
+.jfx-tab-pane .tab-header-area .jfx-rippler{
+    -jfx-rippler-fill: #23ff00;
+}

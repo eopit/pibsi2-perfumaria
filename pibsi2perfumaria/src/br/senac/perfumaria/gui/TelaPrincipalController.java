@@ -2,6 +2,7 @@
 package br.senac.perfumaria.gui;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXPasswordField;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -12,9 +13,9 @@ import javafx.scene.layout.Pane;
 
 public class TelaPrincipalController implements Initializable {
 
-    @FXML
-    private Pane pnl_1;
     private Pane pnl_2;
+    @FXML
+    private JFXPasswordField lbPasswordTeste;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -23,19 +24,9 @@ public class TelaPrincipalController implements Initializable {
     
 
     @FXML
-    private void btVenda(ActionEvent event) {
+    private void getPasswordTeste(ActionEvent event) {
+        System.out.println(lbPasswordTeste.getText());
     }
 
-    @FXML
-    private void btClientes(ActionEvent event) {
-    }
-
-    @FXML
-    private void btProdutos(ActionEvent event) {
-    }
-
-    @FXML
-    private void btRelatorio(ActionEvent event) {
-    }
     
 }

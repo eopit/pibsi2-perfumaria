@@ -53,8 +53,8 @@ public class Perfumaria extends Application {
         
         //Roda a scene nova com a configuracao
         main.setScene(loginScene);
-        main.setMaxHeight(560);
-        main.setMaxWidth(516);
+        main.setMaxHeight(560); //560
+        main.setMaxWidth(516);  //516
         main.setMinHeight(560);
         main.setMinWidth(516);
         main.initStyle(StageStyle.UNDECORATED);

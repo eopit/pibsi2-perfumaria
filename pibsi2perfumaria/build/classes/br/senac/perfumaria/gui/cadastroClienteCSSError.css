@@ -1,0 +1,5 @@
+.jfx-text-field
+{
+-fx-text-inner-color: red;
+-jfx-focus-color: red;
+}

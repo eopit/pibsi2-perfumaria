@@ -6,6 +6,6 @@
 }
 
 .jfx-combo-box .cell {
-    -fx-text-fill: #23ff00;
+    -fx-text-fill: white;
     -fx-background-color: #282828; 
 }

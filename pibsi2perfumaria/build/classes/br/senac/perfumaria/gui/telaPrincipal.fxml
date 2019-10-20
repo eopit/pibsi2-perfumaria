@@ -74,14 +74,14 @@
                                     <Font name="Segoe UI Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <JFXTextField fx:id="lbCEP" focusColor="#23ff00" layoutX="25.0" layoutY="308.0" prefHeight="25.0" prefWidth="105.0" promptText="CEP" stylesheets="@CSS/cadastroClienteCSS.css" />
+                              <JFXTextField fx:id="lbCEP" focusColor="#23ff00" layoutX="25.0" layoutY="308.0" onKeyPressed="#testeCep" prefHeight="25.0" prefWidth="105.0" promptText="CEP" stylesheets="@CSS/cadastroClienteCSS.css" />
                               <JFXTextField fx:id="lbLogradouro" focusColor="#23ff00" layoutX="140.0" layoutY="308.0" prefHeight="25.0" prefWidth="247.0" promptText="Logradouro" stylesheets="@CSS/cadastroClienteCSS.css" />
                               <JFXTextField fx:id="lbComplemento" focusColor="#23ff00" layoutX="397.0" layoutY="308.0" prefHeight="25.0" prefWidth="112.0" promptText="Complemento" stylesheets="@CSS/cadastroClienteCSS.css" />
                               <JFXTextField fx:id="lbBairro" focusColor="#23ff00" layoutX="517.0" layoutY="308.0" prefHeight="25.0" prefWidth="122.0" promptText="Bairro" stylesheets="@CSS/cadastroClienteCSS.css" />
                               <JFXTextField fx:id="lbCidade" focusColor="#23ff00" layoutX="22.0" layoutY="350.0" prefHeight="25.0" prefWidth="118.0" promptText="Cidade" stylesheets="@CSS/cadastroClienteCSS.css" />
                               <JFXTextField fx:id="lbUF" focusColor="#23ff00" layoutX="149.0" layoutY="350.0" prefHeight="25.0" prefWidth="53.0" promptText="UF" stylesheets="@CSS/cadastroClienteCSS.css" />
                               <JFXButton layoutX="1111.0" layoutY="599.0" onAction="#btEditarNaTable" prefHeight="31.0" prefWidth="57.0" stylesheets="@CSS/ButtonCadastroDeCliente.css" text="Editar" textFill="WHITE" />
-                              <JFXTextField fx:id="lbNome1" focusColor="WHITE" layoutX="648.0" layoutY="23.0" prefHeight="25.0" prefWidth="298.0" promptText="Digite nome ou CPF para procurar" stylesheets="@CSS/cadastroClienteCSS.css" />
+                              <JFXTextField fx:id="lbBusca" focusColor="WHITE" layoutX="648.0" layoutY="23.0" prefHeight="25.0" prefWidth="298.0" promptText="Digite nome ou CPF para procurar" stylesheets="@CSS/cadastroClienteCSS.css" />
                               <JFXButton layoutX="1200.0" layoutY="599.0" onAction="#btExcluirNaTable" prefHeight="31.0" prefWidth="57.0" stylesheets="@CSS/ButtonCadastroDeCliente.css" text="Excluir" textFill="WHITE" />
                               <JFXButton layoutX="972.0" layoutY="20.0" onAction="#btProcurarNaTable" prefHeight="31.0" prefWidth="88.0" stylesheets="@CSS/ButtonCadastroDeCliente.css" text="Procurar" textFill="WHITE" />
                               <JFXButton layoutX="428.0" layoutY="599.0" onAction="#limparCampos" prefHeight="31.0" prefWidth="88.0" stylesheets="@CSS/ButtonCadastroDeCliente.css" text="Limpar" textFill="WHITE" />

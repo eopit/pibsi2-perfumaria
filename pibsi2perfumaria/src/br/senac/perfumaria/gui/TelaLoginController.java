@@ -61,7 +61,6 @@ public class TelaLoginController implements Initializable {
                 telaPrincipalStage.setY(event.getScreenY() - yOffset);
             }
         });
-        
             telaPrincipalStage.initStyle(StageStyle.UNDECORATED);
             telaPrincipalStage.setScene(telaPrincipalScene);
             telaPrincipalStage.show();

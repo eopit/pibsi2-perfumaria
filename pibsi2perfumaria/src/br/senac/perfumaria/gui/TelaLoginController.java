@@ -61,11 +61,11 @@ public class TelaLoginController implements Initializable {
                 telaPrincipalStage.setY(event.getScreenY() - yOffset);
             }
         });
-        
+            telaPrincipalStage.initStyle(StageStyle.UNDECORATED);
             telaPrincipalStage.setScene(telaPrincipalScene);
             telaPrincipalStage.show();
             lbSenha.getScene().getWindow().hide();
-//            telaPrincipalStage.initStyle(StageStyle.UNDECORATED); //VER PQ N TA FUNCIONANDO
+
             telaPrincipalStage.toFront();
     }
 }

@@ -1,19 +1,36 @@
 package br.senac.perfumaria.mock;
 
-import br.senac.perfumaria.gui.TelaPrincipalController;
 import br.senac.perfumaria.model.Cliente;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.control.Alert;
 
 public class MockCliente {
 
     private static int numeroDeClientes = 0;
 
-    private static List<Cliente> listaCliente = new ArrayList<Cliente>();
+    protected static List<Cliente> listaCliente = new ArrayList<Cliente>();
 
     public static void inserir(Cliente cliente) throws Exception {
-        cliente.setIdCliente(numeroDeClientes++);
-        listaCliente.add(cliente);
+        boolean existeCliente = false;
+        for (Cliente verificaCliente : listaCliente) {
+            if (verificaCliente.getCpf().equals(cliente.getCpf()) || verificaCliente.getRg().equals(cliente.getRg())) {
+                Alert alerta = new Alert(Alert.AlertType.ERROR);
+                alerta.setTitle("Erro");
+                alerta.setContentText("o Cliente " + cliente.getNome() + " já está cadastrado!");
+                alerta.showAndWait();
+                existeCliente = true;
+            }
+        }
+
+        if (!existeCliente) {
+            cliente.setIdCliente(numeroDeClientes++);
+            listaCliente.add(cliente);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Sucesso ao inserir");
+            alert.setContentText("O cliente " + cliente.getNome() + " foi inserido com êxito");
+            alert.showAndWait();
+        }
     }
 
     public static void atualizar(Cliente clienteProcura) throws Exception {
@@ -46,18 +63,17 @@ public class MockCliente {
         if (id != null && !listaCliente.isEmpty()) {
             for (int i = 0; i < listaCliente.size(); i++) {
                 Cliente clienteLi = listaCliente.get(i);
-                if (clienteLi != null && clienteLi.getIdCliente()== id) {
+                if (clienteLi != null && clienteLi.getIdCliente() == id) {
                     listaCliente.remove(i);
                     break;
                 }
             }
         }
     }
-    
-    
+
     //Lista todos os clientes
     public static List<Cliente> listar()
-            throws Exception {       
+            throws Exception {
         //Retorna a lista de clientes
         return listaCliente;
     }
@@ -67,20 +83,20 @@ public class MockCliente {
     public static List<Cliente> procurar(String valor)
             throws Exception {
         List<Cliente> listaResultado = new ArrayList<Cliente>();
-        
+
         if (valor != null && !listaCliente.isEmpty()) {
             for (Cliente clienteLi : listaCliente) {
-                if (clienteLi != null && clienteLi.getNome() != null &&
-                    clienteLi.getSobrenome() != null) {
+                if (clienteLi != null && clienteLi.getNome() != null
+                        && clienteLi.getSobrenome() != null) {
                     if (clienteLi.getNome().contains(valor)
-                        || clienteLi.getSobrenome().contains(valor)
-                        || clienteLi.getCpf().contains(valor)) {
+                            || clienteLi.getSobrenome().contains(valor)
+                            || clienteLi.getCpf().contains(valor)) {
                         listaResultado.add(clienteLi);
                     }
                 }
             }
         }
-        
+
         //Retorna a lista de clientes encontrados
         return listaResultado;
     }
@@ -90,9 +106,9 @@ public class MockCliente {
             throws Exception {
         if (id != null && !listaCliente.isEmpty()) {
             for (int i = 0; i < listaCliente.size(); i++) {
-                if (listaCliente.get(i) != null && listaCliente.get(i).getIdCliente()== id) {
+                if (listaCliente.get(i) != null && listaCliente.get(i).getIdCliente() == id) {
                     return listaCliente.get(i);
-                }                
+                }
             }
         }
         return null;

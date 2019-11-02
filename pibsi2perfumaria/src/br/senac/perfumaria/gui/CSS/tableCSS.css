@@ -1,5 +1,4 @@
 .root{
-    /*-fx-background-color: #262626;*/
     -fx-background-color: #282828;
 }
 
@@ -46,4 +45,6 @@
     -fx-background-color: #23ff00;
     -fx-background-insets: 0;
     -fx-background-radius: 1;
+    -fx-text-background-color: black;
+    -fx-text-fill: black;
 }

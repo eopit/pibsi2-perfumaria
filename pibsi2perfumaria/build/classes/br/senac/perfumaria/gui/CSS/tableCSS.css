@@ -1,5 +1,4 @@
 .root{
-    /*-fx-background-color: #262626;*/
     -fx-background-color: #282828;
 }
 
@@ -28,7 +27,6 @@
 
 .table-view .table-cell{
     -fx-text-fill: white;
-    /*-fx-text-fill: black;*/
 }
 
 .table-row-cell{
@@ -45,23 +43,8 @@
 
 .table-row-cell:selected {
     -fx-background-color: #23ff00;
-    -fx-text-background-color: black;
     -fx-background-insets: 0;
     -fx-background-radius: 1;
+    -fx-text-background-color: black;
+    -fx-text-fill: black;
 }
-
-/*.table-view > .virtual-flow > .scroll-bar:vertical,
-.table-view > .virtual-flow > .scroll-bar:vertical > .track,
-.table-view > .virtual-flow > .scroll-bar:vertical > .track-background, 
-.table-view > .virtual-flow > .scroll-bar:horizontal,
-.table-view > .virtual-flow > .scroll-bar:horizontal > .track,
-.table-view > .virtual-flow > .scroll-bar:horizontal > .track-background {
-    -fx-background-color: transparent;
-}
-
-
-
-.table-view > .virtual-flow > .scroll-bar > .increment-button, 
-.table-view > .virtual-flow > .scroll-bar > .decrement-button {
-    -fx-opacity: 0;
-}**/

@@ -15,10 +15,10 @@ import java.util.Locale;
  */
 public class Perfume {
     
-    public String nome;
-    public String marca;
-    public Integer idProd;
-    public Integer ml;
+    private String nome;
+    private String marca;
+    private Integer idProd;
+    private Integer ml;
 
     public Integer getMl() {
         return ml;

@@ -22,18 +22,20 @@ public class MockPerfume {
     
     
     
-    public static void inserirPerfume(Perfume perfumeNovo)
+    public static boolean inserirPerfume(Perfume perfumeNovo)
     {
         Boolean inserir = true;
         for (Perfume perfume : listaDePerfume) {
-            if(perfume.nome.equals(perfumeNovo.nome) && perfume.ml == perfumeNovo.ml)
+            if(perfume.getNome().equals(perfumeNovo.getNome()) && perfume.getMl() == perfumeNovo.getMl())
                inserir = false;
         }
         if(inserir){
             idPerfume++;
             perfumeNovo.setIdProd(idPerfume); 
             listaDePerfume.add(perfumeNovo);
+            return  true;
         }else{
+            return false;
         }
     }
     

@@ -6,6 +6,7 @@
 package br.senac.perfumaria.model;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  *
@@ -13,13 +14,15 @@ import java.time.LocalDate;
  */
 public class Venda {
     
-    public Perfume perfume;
+    private Perfume perfume;
     
-    public Cliente cliente;
+    private Cliente cliente;
     
-    public LocalDate data;
+    private LocalDate data;
     
-    public Integer idVenda;
+    private Integer idVenda;
+    
+    private LocalTime time;
 
     public Perfume getPerfume() {
         return perfume;
@@ -39,6 +42,14 @@ public class Venda {
 
     public LocalDate getData() {
         return data;
+    }
+    
+    public LocalTime getTime() {
+        return time;
+    }
+    
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 
     public void setData(LocalDate data) {

@@ -16,6 +16,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,11 +46,12 @@ import javafx.util.Callback;
 public class TelaPrincipalController implements Initializable {
 
     public static List<Venda> listaTemporariaV = new ArrayList();
+    public boolean editVenda = false;
     public boolean editProd = false;
     public boolean editMode = false;
-    public int qtdError = 0;
     public Cliente clienteEdicao;
     public Perfume perfumeEdit;
+    public Venda vendaAtualizar;
 // <editor-fold defaultstate="collapsed" desc="JavaFx Componentes">
     private JFXPasswordField lbPasswordTeste;
     @FXML
@@ -170,6 +172,24 @@ public class TelaPrincipalController implements Initializable {
     private JFXButton btn_Venda_Cancelar;
     @FXML
     private JFXTextField txt_Venda_ValorF;
+    @FXML
+    private JFXDatePicker data_Relatorio_Inicial;
+    @FXML
+    private JFXDatePicker data_Relatorio_Final;
+    @FXML
+    private TableView<Venda> tbv_Relatorio;
+    @FXML
+    private TableColumn<Venda, String> col_Relatorio_Cliente;
+    @FXML
+    private TableColumn<Venda, String> col_Relatorio_NP;
+    @FXML
+    private TableColumn<Venda, String> col_Relatorio_ML;
+    @FXML
+    private TableColumn<Venda, String> col_Relatorio_Qtd;
+    @FXML
+    private TableColumn<Venda, String> col_Relatorio_VU;
+    @FXML
+    private TableColumn<Venda, String> col_Relatorio_Data;
 
 // </editor-fold>
     @Override
@@ -203,9 +223,7 @@ public class TelaPrincipalController implements Initializable {
                     lbCidade.setText(viaCep.getLocalidade());
                     lbUF.setText(viaCep.getUf());
                 } catch (ViaCEPException ex) {
-                    qtdError++;
                     lbCEP.setStyle("-fx-text-fill: red;");
-                    Logger.getLogger(TelaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -257,6 +275,7 @@ public class TelaPrincipalController implements Initializable {
             }
         });
 // </editor-fold>
+
 // <editor-fold defaultstate="collapsed" desc="Populando Colunas tabela">
         //Serve para configurar as colunas da table do Cliente
         colNome.setCellValueFactory(new PropertyValueFactory("nome"));
@@ -293,10 +312,40 @@ public class TelaPrincipalController implements Initializable {
             }
         });
 
-        col_Venda_Marca.setCellValueFactory(new PropertyValueFactory("marca"));
-        col_Venda_Qtd.setCellValueFactory(new PropertyValueFactory("qtdProd"));
-        col_Venda_ML.setCellValueFactory(new PropertyValueFactory("ml"));
-        col_Venda_VN.setCellValueFactory(new PropertyValueFactory("preco"));
+        col_Venda_Marca.setCellValueFactory(new Callback<CellDataFeatures<Venda, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Venda, String> data) {
+                StringProperty sp = new SimpleStringProperty();
+                sp.setValue(String.valueOf(data.getValue().getPerfume().getMarca()));
+                return sp;
+            }
+        });
+
+        col_Venda_Qtd.setCellValueFactory(new Callback<CellDataFeatures<Venda, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Venda, String> data) {
+                StringProperty sp = new SimpleStringProperty();
+                sp.setValue(String.valueOf(data.getValue().getPerfume().getQtdProd()));
+                return sp;
+            }
+        });
+
+        col_Venda_ML.setCellValueFactory(new Callback<CellDataFeatures<Venda, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Venda, String> data) {
+                StringProperty sp = new SimpleStringProperty();
+                sp.setValue(String.valueOf(data.getValue().getPerfume().getMl()));
+                return sp;
+            }
+        });
+        col_Venda_VN.setCellValueFactory(new Callback<CellDataFeatures<Venda, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Venda, String> data) {
+                StringProperty sp = new SimpleStringProperty();
+                sp.setValue(String.valueOf(data.getValue().getPerfume().getPreco()));
+                return sp;
+            }
+        });
     }
 
     // <editor-fold defaultstate="collapsed" desc="Cliente">
@@ -499,7 +548,7 @@ public class TelaPrincipalController implements Initializable {
 
                 //insere na classe mock
                 inserirCliente(cliente);
-                
+
                 btProcurarNaTable(event);
 
             } else {
@@ -620,6 +669,7 @@ public class TelaPrincipalController implements Initializable {
 
     @FXML
     private void btn_Prod_FIltrar(ActionEvent event) {
+        tbv_Prod.getItems().clear();
         try {
             tbv_Prod.setItems(FXCollections.observableArrayList(MockPerfume.listarPerfumes(txt_Prod_Filtro.getText())));
         } catch (Exception e) {
@@ -669,9 +719,13 @@ public class TelaPrincipalController implements Initializable {
             perfume.setData(data_Prod_Validade.getValue());
             perfume.setQtdProd(Integer.valueOf(txt_Prod_Qtd.getText()));
 
-            MockPerfume.inserirPerfume(perfume);
-            limparCamposProd();
-            exibeSucesso("inserir");
+            Boolean result = MockPerfume.inserirPerfume(perfume);
+            if (result) {
+                limparCamposProd();
+                exibeSucesso("inserir");
+            } else {
+                exibeAlerta("inserir");
+            }
         } catch (Exception e) {
             exibeAlerta("inserir");
         }
@@ -762,19 +816,98 @@ public class TelaPrincipalController implements Initializable {
 
     @FXML
     private void btn_Venda_Add(ActionEvent event) {
-        addItemVenda();
+        if (!editVenda) {
+            try {
+                addItemVenda();
+            } catch (Exception e) {
+                e.printStackTrace();
+                exibeAlertaVenda("Erro ao inserir esse produto");
+            }
+
+        } else {
+            try {
+                boolean result = atualizarProdutoVenda(vendaAtualizar.getPerfume().getIdProd());
+                if (result) {
+                    recarregarTabelaVenda();
+                    exibeSucessoVenda("Produto atualizado com sucesso");
+                    editVenda = false;
+                    limparCamposVenda();
+                }
+            } catch (Exception e) {
+                exibeAlertaVenda("Erro ao atualizar o produto\nAlteração do produto descartada");
+                editVenda = false;
+                limparCamposVenda();
+            }
+        }
     }
 
     @FXML
     private void btn_Venda_Atualizar(ActionEvent event) {
+        if (!editVenda) {
+            try {
+                Venda venda = new Venda();
+                venda = tbv_Venda.getSelectionModel().getSelectedItem();
+                txt_Venda_CN.setText(venda.getPerfume().getNome());
+                txt_Venda_ML.setText(venda.getPerfume().getMl().toString());
+                txt_Venda_Qtd.setText(venda.getPerfume().getQtdProd().toString());
+                vendaAtualizar = venda;
+                editVenda = true;
+            } catch (Exception e) {
+                exibeAlertaVenda("Verifique se você selecionou algum produto ");
+            }
+        } else {
+            exibeAlertaVenda("Você não pode atualizar um produto em quanto não finalizar a alteração do anteriro");
+        }
+
     }
 
     @FXML
     private void btn_Venda_Excluir(ActionEvent event) {
+        try {
+
+            Venda venda = tbv_Venda.getSelectionModel().getSelectedItem();
+
+            Alert alerta = new Alert(AlertType.CONFIRMATION);
+            alerta.setTitle("Excluir");
+            alerta.setContentText("Deseja mesmo excluir o Pefume " + venda.getPerfume().getNome()
+                    + "\nde " + venda.getPerfume().getMl() + " mLs " + " ?");
+            Optional<ButtonType> result = alerta.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+                excluirProdVenda(venda);
+                recarregarTabelaVenda();
+                exibeSucessoVenda("Produto excluido com sucesso");
+            }
+        } catch (Exception e) {
+            exibeAlertaVenda("Erro ao apagar produto");
+        }
     }
 
     @FXML
     private void btn_Venda_FinalizarV(ActionEvent event) {
+        if (!editVenda) {
+            try {
+                MockVenda.FinalizarCompra(listaTemporariaV);
+                listaTemporariaV.clear();
+                tbv_Venda.getItems().clear();
+                limparCamposVenda();
+                txt_Venda_CPF.setText("");
+                txt_Venda_ValorF.setText("");
+                txt_Venda_CPF.setEditable(true);
+                exibeSucessoVenda("Venda finalizada com sucesso!");
+            } catch (Exception e) {
+                listaTemporariaV.clear();
+                tbv_Venda.getItems().clear();
+                limparCamposVenda();
+                txt_Venda_CPF.setText("");
+                txt_Venda_ValorF.setText("");
+                txt_Venda_CPF.setEditable(true);
+                exibeAlertaVenda("Erro ao finalizar compra");
+            }
+        } else {
+            exibeAlertaVenda("Você não pode efetuar uma venda editando um produto."
+                    + "\nSalve as alterações para poder proseguir na compra");
+        }
     }
 
     public void addItemVenda() {
@@ -794,55 +927,100 @@ public class TelaPrincipalController implements Initializable {
                     Boolean temProd = false;
                     //verificar se o produto ja esta no carrinho
                     for (Venda ltvenda : listaTemporariaV) {
-                        if (ltvenda.perfume.getNome().equals(perfumeV.getNome())
-                                || ltvenda.perfume.getIdProd().toString().equals(perfumeV.getIdProd())) {
+                        if (ltvenda.getPerfume().getNome().equals(perfumeV.getNome())
+                                || ltvenda.getPerfume().getIdProd().toString().equals(perfumeV.getIdProd())) {
                             temProd = true;
                         }
                     }
                     if (temProd == false) {
-                        vendaItem.idVenda = MockVenda.buscarId();
-                        vendaItem.cliente = clienteV;
-                        vendaItem.perfume = perfumeV;
-                        vendaItem.perfume.qtdProd = Integer.valueOf(txt_Venda_Qtd.getText());
+                        vendaItem.setIdVenda(MockVenda.buscarId());
+                        vendaItem.setData(LocalDate.now());
+                        vendaItem.setTime(LocalTime.now());
+                        vendaItem.setCliente(clienteV);
+                        vendaItem.setPerfume(perfumeV);
+                        vendaItem.getPerfume().setQtdProd(Integer.valueOf(txt_Venda_Qtd.getText()));
                         listaTemporariaV.add(vendaItem);
                         tbv_Venda.getItems().clear();
                         tbv_Venda.setItems(FXCollections.observableArrayList(listaTemporariaV));
                         double valorFinal = 0;
                         //calculando o valor total
                         for (Venda perfumeVF : listaTemporariaV) {
-                            valorFinal = valorFinal + (perfumeVF.perfume.getQtdProd() * perfumeVF.perfume.getPreco());
+                            valorFinal = valorFinal + (perfumeVF.getPerfume().getQtdProd() * perfumeVF.getPerfume().getPreco());
                         }
                         txt_Venda_ValorF.setText(String.valueOf(valorFinal));
-                        exibeP(vendaItem);
+                        txt_Venda_CN.setText("");
+                        txt_Venda_ML.setText("");
+                        txt_Venda_Qtd.setText("");
+//                        apagar exibeP
+//                        exibeP(vendaItem);
                     } else {
-                        Alert alerta = new Alert(AlertType.ERROR);
-                        alerta.setTitle("Erro");
-                        alerta.setContentText("Esse produto ja está na venda");
-                        alerta.showAndWait();
+                        exibeAlertaVenda("Esse produto ja está na venda");
                     }
                 } else {
-                    Alert alerta = new Alert(AlertType.ERROR);
-                    alerta.setTitle("Erro");
-                    alerta.setContentText("Quantidade maior do que a quantia do estoque");
-                    alerta.showAndWait();
+                    exibeAlertaVenda("Quantidade maior do que a quantia do estoque");
                 }
             } else {
-                Alert alerta = new Alert(AlertType.ERROR);
-                alerta.setTitle("Erro");
-                alerta.setContentText("Erro ao buscar pelo perfume, verifique o codigo ou o nome digitado");
-                alerta.showAndWait();
+                exibeAlertaVenda("Erro ao buscar pelo perfume, verifique o codigo ou o nome digitado");
             }
         } else {
-            Alert alerta = new Alert(AlertType.ERROR);
-            alerta.setTitle("Erro");
-            alerta.setContentText("Erro ao buscar cliente na base de dados, verifique o CPF digitado");
-            alerta.showAndWait();
+            exibeAlertaVenda("Erro ao buscar cliente na base de dados, verifique o CPF digitado");
         }
 
     }
 
+    public void excluirProdVenda(Venda item) {
+        for (int i = 0; i < listaTemporariaV.size(); i++) {
+            Venda itemVenda = listaTemporariaV.get(i);
+            if (itemVenda == item) {
+                listaTemporariaV.remove(i);
+            }
+        }
+    }
+
+    public boolean atualizarProdutoVenda(Integer id) {
+        vendaAtualizar.setPerfume(MockVenda.verificarPerfume(txt_Venda_CN.getText(),
+                txt_Venda_ML.getText()));
+        int contador = 0;
+        if (vendaAtualizar != null) {
+            if (vendaAtualizar.getPerfume().getQtdProd() >= Integer.valueOf(txt_Venda_Qtd.getText())) {
+                vendaAtualizar.getPerfume().setQtdProd(Integer.valueOf(txt_Venda_Qtd.getText()));
+                for (int i = 0; i < listaTemporariaV.size(); i++) {
+                    Venda itemAtualizar = listaTemporariaV.get(i);
+                    if (itemAtualizar.getPerfume().getIdProd() == id) {
+                        contador++;
+                    }
+                }
+                //usando o contador para ver se o produto que vai ser alterado já esta 
+                //na lista temporaria
+                if (contador == 1) {
+                    for (Venda itemVenda : listaTemporariaV) {
+                        if (itemVenda.getPerfume().getIdProd() == id) {
+                            itemVenda.setPerfume(vendaAtualizar.getPerfume());
+                            return true;
+                        }
+                    }
+                } else {
+                    exibeAlertaVenda("Esse produto ja esta presente na lista de vendas");
+                    return false;
+                }
+            }
+        }
+        exibeAlertaVenda("Não tem um perfume com esses dados");
+        return false;
+    }
+
+    public void recarregarTabelaVenda() {
+        tbv_Venda.getItems().clear();
+        tbv_Venda.setItems(FXCollections.observableArrayList(listaTemporariaV));
+        double valorTotal = 0;
+        for (Venda venda : listaTemporariaV) {
+            valorTotal = valorTotal + (venda.getPerfume().getPreco() * venda.getPerfume().getQtdProd());
+        }
+        txt_Venda_ValorF.setText(String.valueOf(valorTotal));
+    }
+
     public void exibeP(Venda vs) {
-        String teste = "Nome: " + vs.getPerfume().getNome() + "\n qtd: " + vs.getPerfume().getQtdProd();
+        String teste = "Nome: " + vs.getPerfume().getNome() + "\n qtd: " + vs.getPerfume().getQtdProd() + "\n data: " + vs.getData();
 
         Alert alerta = new Alert(AlertType.ERROR);
         alerta.setTitle("Erro");
@@ -850,4 +1028,117 @@ public class TelaPrincipalController implements Initializable {
         alerta.showAndWait();
     }
 
+    public void exibeAlertaVenda(String contexto) {
+        Alert alerta = new Alert(AlertType.ERROR);
+        alerta.setTitle("Erro");
+        alerta.setContentText(contexto);
+        alerta.showAndWait();
+    }
+
+    public void limparCamposVenda() {
+        txt_Venda_ML.setText("");
+        txt_Venda_Qtd.setText("");
+        txt_Venda_CN.setText("");
+    }
+
+    public void exibeSucessoVenda(String contexto) {
+        Alert alerta = new Alert(AlertType.INFORMATION);
+        alerta.setTitle("Sucesso");
+        alerta.setContentText(contexto);
+        alerta.showAndWait();
+    }
+
+    @FXML
+    private void btn_Relatorio_GR(ActionEvent event) {
+        //Limpa a lista antiga
+        tbv_Relatorio.getItems().clear();
+        //only for debugging
+        System.out.println("VENDAS ABAIXO");
+
+        List resultadoRelatorio = listarRelatorio();
+
+//        if (resultadoRelatorio != null) {
+        tbv_Relatorio.setItems(FXCollections.observableArrayList(resultadoRelatorio));
+//        }
+
+        col_Relatorio_Cliente.setCellValueFactory(new Callback<CellDataFeatures<Venda, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Venda, String> data) {
+                StringProperty sp = new SimpleStringProperty();
+                sp.setValue(String.valueOf(data.getValue().getCliente().getCpf()));
+                return sp;
+            }
+        });
+
+        col_Relatorio_NP.setCellValueFactory(new Callback<CellDataFeatures<Venda, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Venda, String> data) {
+                StringProperty sp = new SimpleStringProperty();
+                sp.setValue(String.valueOf(data.getValue().getPerfume().getNome()));
+                return sp;
+            }
+        });
+
+        col_Relatorio_ML.setCellValueFactory(new Callback<CellDataFeatures<Venda, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Venda, String> data) {
+                StringProperty sp = new SimpleStringProperty();
+                sp.setValue(String.valueOf(data.getValue().getPerfume().getMl()));
+                return sp;
+            }
+        });
+
+        col_Relatorio_Qtd.setCellValueFactory(new Callback<CellDataFeatures<Venda, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Venda, String> data) {
+                StringProperty sp = new SimpleStringProperty();
+                sp.setValue(String.valueOf(data.getValue().getPerfume().getQtdProd()));
+                return sp;
+            }
+        });
+
+        col_Relatorio_VU.setCellValueFactory(new Callback<CellDataFeatures<Venda, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Venda, String> data) {
+                StringProperty sp = new SimpleStringProperty();
+                sp.setValue(String.valueOf(data.getValue().getPerfume().getPreco()));
+                return sp;
+            }
+        });
+
+        col_Relatorio_Data.setCellValueFactory(new Callback<CellDataFeatures<Venda, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Venda, String> data) {
+                StringProperty sp = new SimpleStringProperty();
+                sp.setValue(String.valueOf(data.getValue().getData()) + " " + data.getValue().getTime());
+                return sp;
+            }
+        });
+    }
+
+    private List listarRelatorio() {
+        List resultadoRelatorio;
+
+        //FAZER UM PRA PROCURA DAS DATAS, AQUI ESTA LISTANDO TODOS SEM FILTRAR
+        try {
+            if (data_Relatorio_Inicial.getValue() == null && data_Relatorio_Final.getValue() == null) {
+                resultadoRelatorio = MockVenda.listar();
+            } else {
+                LocalDate inicial = data_Relatorio_Inicial.getValue();
+                LocalDate termino = data_Relatorio_Final.getValue();
+                resultadoRelatorio = MockVenda.procurar(inicial, termino);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            resultadoRelatorio = null;
+        }
+        return resultadoRelatorio;
+    }
+
+    @FXML
+    private void btn_Relatorio_Limpar(ActionEvent event) {
+        data_Relatorio_Inicial.setValue(null);
+        data_Relatorio_Final.setValue(null);
+    }
 }

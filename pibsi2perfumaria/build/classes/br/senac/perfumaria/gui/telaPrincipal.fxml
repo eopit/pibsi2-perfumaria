@@ -51,7 +51,7 @@
                                 </columns>
                               </TableView>
                               <Label layoutX="819.0" layoutY="517.0" text="Valor Total:" textFill="#fcf3f3" />
-                              <JFXTextField fx:id="txt_Venda_ValorF" editable="false" layoutX="893.0" layoutY="513.0" />
+                              <JFXTextField fx:id="txt_Venda_ValorF" editable="false" layoutX="893.0" layoutY="513.0" stylesheets="@CSS/cadastroClienteCSS.css" />
                               <JFXButton layoutX="819.0" layoutY="145.0" onAction="#btn_Venda_Atualizar" stylesheets="@CSS/ButtonCadastroDeCliente.css" text="Alterar" />
                               <JFXButton layoutX="902.0" layoutY="145.0" onAction="#btn_Venda_Excluir" stylesheets="@CSS/ButtonCadastroDeCliente.css" text="Excluir" />
                               <JFXButton layoutX="1137.0" layoutY="557.0" onAction="#btn_Venda_FinalizarV" prefHeight="51.0" prefWidth="112.0" stylesheets="@CSS/ButtonCadastroDeCliente.css" text="Finalizar Compra" />
@@ -153,7 +153,7 @@
                                     <TableColumn fx:id="col_Prod_Qtd" prefWidth="81.0" text="Qtd" />
                                     <TableColumn fx:id="col_Prod_mLs" prefWidth="64.0" text="mLs" />
                                     <TableColumn fx:id="col_Prod_Valor" prefWidth="104.0" text="Valor" />
-                                    <TableColumn fx:id="col_Prod_Data" prefWidth="133.0" text="Data" />
+                                    <TableColumn fx:id="col_Prod_Data" prefWidth="133.0" text="Validade" />
                                 </columns>
                               </TableView>
                            </children></AnchorPane>
@@ -161,7 +161,25 @@
                   </Tab>
                   <Tab text="Relatórios">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <JFXDatePicker fx:id="data_Relatorio_Inicial" defaultColor="#44f10b" layoutX="19.0" layoutY="107.0" stylesheets="@CSS/cadastroClienteCSS.css" />
+                              <JFXDatePicker fx:id="data_Relatorio_Final" defaultColor="#44f10b" layoutX="218.0" layoutY="107.0" stylesheets="@CSS/cadastroClienteCSS.css" />
+                              <Label layoutX="66.0" layoutY="69.0" text="Data Inicial" textFill="#44f10b" />
+                              <Label layoutX="267.0" layoutY="69.0" text="Data Final" textFill="#44f10b" />
+                              <JFXButton layoutX="304.0" layoutY="177.0" onAction="#btn_Relatorio_GR" stylesheets="@CSS/ButtonCadastroDeCliente.css" text="Procurar" />
+                              <TableView fx:id="tbv_Relatorio" layoutX="410.0" layoutY="22.0" prefHeight="532.0" prefWidth="813.0" stylesheets="@CSS/tableCSS.css">
+                                <columns>
+                                  <TableColumn fx:id="col_Relatorio_Cliente" prefWidth="170.0" text="CPF do Cliente" />
+                                  <TableColumn fx:id="col_Relatorio_NP" prefWidth="174.0" text="Nome do Perfume" />
+                                    <TableColumn fx:id="col_Relatorio_ML" minWidth="2.0" prefWidth="87.0" text="mLs" />
+                                    <TableColumn fx:id="col_Relatorio_Qtd" prefWidth="96.0" text="Qtd" />
+                                    <TableColumn fx:id="col_Relatorio_VU" prefWidth="132.0" text="Valor Unitario" />
+                                    <TableColumn fx:id="col_Relatorio_Data" prefWidth="152.0" text="Data da Venda" />
+                                </columns>
+                              </TableView>
+                              <JFXButton layoutX="218.0" layoutY="177.0" onAction="#btn_Relatorio_Limpar" stylesheets="@CSS/ButtonCadastroDeCliente.css" text="Limpar" />
+                           </children></AnchorPane>
                     </content>
                   </Tab>
                </tabs>

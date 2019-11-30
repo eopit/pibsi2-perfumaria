@@ -34,6 +34,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
@@ -190,6 +191,14 @@ public class TelaPrincipalController implements Initializable {
     private TableColumn<Venda, String> col_Relatorio_VU;
     @FXML
     private TableColumn<Venda, String> col_Relatorio_Data;
+    @FXML
+    private Label valorTotalRelatorio;
+    @FXML
+    private Label lblError;
+    @FXML
+    private Label lbErrorCep;
+    @FXML
+    private Label lbNomeCliente;
 
 // </editor-fold>
     @Override
@@ -215,15 +224,24 @@ public class TelaPrincipalController implements Initializable {
                 ViaCEP viaCep = new ViaCEP();
 
                 try {
-                    lbCEP.setStyle("-fx-text-fill: #23ff00;");
+                    lbCEP.setStyle("-jfx-focus-color: 23ff00; -fx-text-fill: white;");
+                    lbErrorCep.setText("");
                     viaCep.buscar(lbCEP.getText());
                     lbLogradouro.setText(viaCep.getLogradouro());;
                     lbComplemento.setText(viaCep.getComplemento());
                     lbBairro.setText(viaCep.getBairro());
                     lbCidade.setText(viaCep.getLocalidade());
                     lbUF.setText(viaCep.getUf());
+                    //muda a cor dos campos pq deu certo
+                    lbLogradouro.setStyle("-jfx-focus-color: 23ff00; -fx-text-fill: white;");
+                    lbBairro.setStyle("-jfx-focus-color: 23ff00; -fx-text-fill: white;");
+                    lbCidade.setStyle("-jfx-focus-color: 23ff00; -fx-text-fill: white;");
+                    lbUF.setStyle("-jfx-focus-color: 23ff00; -fx-text-fill: white;");
+
                 } catch (ViaCEPException ex) {
-                    lbCEP.setStyle("-fx-text-fill: red;");
+                    lbErrorCep.setText("CEP não encontrado.");
+                    lbCEP.setStyle("-jfx-focus-color: red; -fx-text-fill: red;");
+                    lbErrorCep.setStyle("-fx-text-fill: red;");
                 }
             }
         });
@@ -428,13 +446,13 @@ public class TelaPrincipalController implements Initializable {
     }
 
     @FXML
-    private void limparCampos(ActionEvent event) {
+    public void limparCampos(ActionEvent event) {
         limparCampoCliente();
     }
 
     @FXML
     private void salvarCliente(ActionEvent event) {
-        String camposRestantes = "Os campos ";
+        String camposRestantes = "O(s) campo(s) ";
 
         if (lbNome.getText().equals("")) {
             camposRestantes += "Nome, ";
@@ -452,6 +470,9 @@ public class TelaPrincipalController implements Initializable {
 
         if (lbDataDeNascimento.getValue() == null) {
             camposRestantes += "Data de Nascimento, ";
+            lbDataDeNascimento.setStyle("-jfx-focus-color: red; -fx-text-fill: red;");
+        } else {
+            lbDataDeNascimento.setStyle("-jfx-focus-color: 23ff00; -fx-text-fill: white;");
         }
 
         if (lbCPF.getText().equals("")) {
@@ -470,10 +491,16 @@ public class TelaPrincipalController implements Initializable {
 
         if (comboGenero.getSelectionModel().isEmpty()) {
             camposRestantes += "Genero, ";
+            comboGenero.setStyle("-jfx-focus-color: red; -fx-text-fill: red;");
+        } else {
+            comboGenero.setStyle("-jfx-focus-color: 23ff00; -fx-text-fill: white;");
         }
 
         if (comboEstadoCivil.getSelectionModel().isEmpty()) {
             camposRestantes += "Estado Civil, ";
+            comboEstadoCivil.setStyle("-jfx-focus-color: red; -fx-text-fill: red;");
+        } else {
+            comboEstadoCivil.setStyle("-jfx-focus-color: 23ff00; -fx-text-fill: white;");
         }
 
         if (lbTelefone.getText().equals("")) {
@@ -525,7 +552,7 @@ public class TelaPrincipalController implements Initializable {
             lbUF.setStyle("-jfx-focus-color: 23ff00; -fx-text-fill: white;");
         }
 
-        if (camposRestantes.equals("Os campos ")) {
+        if (camposRestantes.equals("O(s) campo(s) ")) {
             if (!editMode) {
 
                 Cliente cliente = new Cliente();
@@ -678,10 +705,59 @@ public class TelaPrincipalController implements Initializable {
 
     @FXML
     private void btn_Prod_Salvar(ActionEvent event) {
-        if (editProd == false) {
-            salvarProd();
+
+        String camposRestantesProd = "O(s) campo(s) ";
+
+        if (txt_Prod_Nome.getText().equals("")) {
+            camposRestantesProd += "Nome, ";
+            txt_Prod_Nome.setStyle("-jfx-focus-color: red; -fx-text-fill: red;");
         } else {
-            alterarProd();
+            txt_Prod_Nome.setStyle("-jfx-focus-color: 23ff00; -fx-text-fill: white;");
+        }
+
+        if (txt_Prod_Marca.getText().equals("")) {
+            camposRestantesProd += "Marca, ";
+            txt_Prod_Marca.setStyle("-jfx-focus-color: red; -fx-text-fill: red;");
+        } else {
+            txt_Prod_Marca.setStyle("-jfx-focus-color: 23ff00; -fx-text-fill: white;");
+        }
+
+        if (txt_Prod_Valor.getText().equals("")) {
+            camposRestantesProd += "Valor, ";
+            txt_Prod_Valor.setStyle("-jfx-focus-color: red; -fx-text-fill: red;");
+        } else {
+            txt_Prod_Valor.setStyle("-jfx-focus-color: 23ff00; -fx-text-fill: white;");
+        }
+
+        if (txt_Prod_mL.getText().equals("")) {
+            camposRestantesProd += "mLs, ";
+            txt_Prod_mL.setStyle("-jfx-focus-color: red; -fx-text-fill: red;");
+        } else {
+            txt_Prod_mL.setStyle("-jfx-focus-color: 23ff00; -fx-text-fill: white;");
+        }
+
+        if (txt_Prod_Qtd.getText().equals("")) {
+            camposRestantesProd += "Quantidade, ";
+            txt_Prod_Qtd.setStyle("-jfx-focus-color: red; -fx-text-fill: red;");
+        } else {
+            txt_Prod_Qtd.setStyle("-jfx-focus-color: 23ff00; -fx-text-fill: white;");
+        }
+
+        if (data_Prod_Validade.getValue() == null) {
+            camposRestantesProd += "Data de Nascimento, ";
+        }
+
+        if (camposRestantesProd.equals("O(s) campo(s) ")) {
+            if (editProd == false) {
+                salvarProd();
+            } else {
+                alterarProd();
+            }
+        } else { //SE TIVER CAMPO VAZIO
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Erro ao cadastrar");
+            alert.setContentText(camposRestantesProd + " falta(m) ser preenchido(s)!");
+            alert.showAndWait();
         }
     }
 
@@ -819,6 +895,7 @@ public class TelaPrincipalController implements Initializable {
         if (!editVenda) {
             try {
                 addItemVenda();
+                btn_Prod_FIltrar(event);
             } catch (Exception e) {
                 e.printStackTrace();
                 exibeAlertaVenda("Erro ao inserir esse produto");
@@ -858,7 +935,6 @@ public class TelaPrincipalController implements Initializable {
         } else {
             exibeAlertaVenda("Você não pode atualizar um produto em quanto não finalizar a alteração do anteriro");
         }
-
     }
 
     @FXML
@@ -951,8 +1027,6 @@ public class TelaPrincipalController implements Initializable {
                         txt_Venda_CN.setText("");
                         txt_Venda_ML.setText("");
                         txt_Venda_Qtd.setText("");
-//                        apagar exibeP
-//                        exibeP(vendaItem);
                     } else {
                         exibeAlertaVenda("Esse produto ja está na venda");
                     }
@@ -1050,16 +1124,12 @@ public class TelaPrincipalController implements Initializable {
 
     @FXML
     private void btn_Relatorio_GR(ActionEvent event) {
-        //Limpa a lista antiga
         tbv_Relatorio.getItems().clear();
-        //only for debugging
-        System.out.println("VENDAS ABAIXO");
-
         List resultadoRelatorio = listarRelatorio();
 
-//        if (resultadoRelatorio != null) {
-        tbv_Relatorio.setItems(FXCollections.observableArrayList(resultadoRelatorio));
-//        }
+        if (resultadoRelatorio != null) {
+            tbv_Relatorio.setItems(FXCollections.observableArrayList(resultadoRelatorio));
+        }
 
         col_Relatorio_Cliente.setCellValueFactory(new Callback<CellDataFeatures<Venda, String>, ObservableValue<String>>() {
             @Override
@@ -1114,10 +1184,11 @@ public class TelaPrincipalController implements Initializable {
                 return sp;
             }
         });
+
     }
 
     private List listarRelatorio() {
-        List resultadoRelatorio;
+        List<Venda> resultadoRelatorio = new ArrayList();
 
         //FAZER UM PRA PROCURA DAS DATAS, AQUI ESTA LISTANDO TODOS SEM FILTRAR
         try {
@@ -1128,7 +1199,13 @@ public class TelaPrincipalController implements Initializable {
                 LocalDate termino = data_Relatorio_Final.getValue();
                 resultadoRelatorio = MockVenda.procurar(inicial, termino);
             }
+            //Reseta o valor para 0.0;
+            Double precoFinal = 0.0;
+            for (Venda venda : resultadoRelatorio) {
+                precoFinal += venda.getPerfume().getPreco() * venda.getPerfume().getQtdProd();
+            }
 
+            valorTotalRelatorio.setText(precoFinal.toString() + " reais");
         } catch (Exception ex) {
             ex.printStackTrace();
             resultadoRelatorio = null;
@@ -1140,5 +1217,20 @@ public class TelaPrincipalController implements Initializable {
     private void btn_Relatorio_Limpar(ActionEvent event) {
         data_Relatorio_Inicial.setValue(null);
         data_Relatorio_Final.setValue(null);
+    }
+
+    @FXML
+    private void btn_Venda_Procurar_Cliente(ActionEvent event) {
+        try {
+            //achar cliente aqui
+
+            if (!MockCliente.procurarPorCPF(lbNomeCliente.getText()).equals("Cliente não encontrado")) {
+                MockCliente.procurarPorCPF(lbNomeCliente.getText());
+            } else {
+                lbNomeCliente.setText("Cliente não encontrado");
+            }
+        } catch (Exception ex) {
+
+        }
     }
 }

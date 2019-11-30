@@ -5,12 +5,16 @@
  */
 package br.senac.perfumaria.mock;
 
+import br.senac.perfumaria.gui.TelaLoginController;
+import br.senac.perfumaria.gui.TelaPrincipalController;
 import br.senac.perfumaria.model.Cliente;
 import br.senac.perfumaria.model.Perfume;
 import br.senac.perfumaria.model.Venda;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -92,12 +96,18 @@ public class MockVenda {
         if (dataInicial != null && dataFinal != null && !listaDeVendas.isEmpty()) {
             for (Venda vendaNew : listaDeVendas) {
                 if (vendaNew != null && vendaNew.getData() != null) {
-                    int resultadoPrimeiraData = dataInicial.compareTo(vendaNew.getData());
-                    int resultadoSegundaData = dataFinal.compareTo(vendaNew.getData());
-                    System.out.println(resultadoPrimeiraData);
-                    if (resultadoPrimeiraData >= 0 && resultadoSegundaData <= 0) {
-                        System.out.println("ENTROU NO IF DAS DATAS!");
+                    System.out.println(dataInicial);
+                    System.out.println(dataFinal);
+
+                    long qtdDiasEntre = ChronoUnit.DAYS.between(dataInicial, dataFinal);
+
+                    if (qtdDiasEntre <= 30 && qtdDiasEntre >= 0) {
                         listaResultado.add(vendaNew);
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Erro ao gerar relatório");
+                        alert.setContentText("A data inserida não pode ser mais que 30 dias!");
+                        alert.showAndWait();
                     }
                 }
             }

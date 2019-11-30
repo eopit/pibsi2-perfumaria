@@ -1,5 +1,6 @@
 package br.senac.perfumaria.application;
 
+import javafx.scene.image.Image;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,9 @@ public class Perfumaria extends Application {
         Parent telaLogin = FXMLLoader.load(getClass().getResource("/br/senac/perfumaria/gui/telaLogin.fxml"));
         Scene loginScene = new Scene(telaLogin);
 
+        Image icone = new Image(getClass().getResourceAsStream("/br/senac/perfumaria/gui/images/logo.png"));
+        main.getIcons().add(icone);
+        
         //Metodo para deixar ela draggable
 // <editor-fold defaultstate="collapsed" desc="Draggable">     
         telaLogin.setOnMousePressed(new EventHandler<MouseEvent>() {

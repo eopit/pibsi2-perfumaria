@@ -1,5 +1,6 @@
 package br.senac.perfumaria.mock;
 
+import br.senac.perfumaria.gui.TelaPrincipalController;
 import br.senac.perfumaria.model.Cliente;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +100,16 @@ public class MockCliente {
 
         //Retorna a lista de clientes encontrados
         return listaResultado;
+    }
+    
+    public static String procurarPorCPF(String CPF) throws Exception {
+        String error = "Cliente não encontrado";
+        for (Cliente clienteTemp : listaCliente) { 
+            if (clienteTemp.getCpf().equals(CPF)) {
+                return clienteTemp.getNome();
+            }
+        }
+        return error;
     }
 
     //Obtém um cliente da lista

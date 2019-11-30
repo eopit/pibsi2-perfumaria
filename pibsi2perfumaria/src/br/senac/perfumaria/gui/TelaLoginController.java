@@ -15,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -44,12 +45,25 @@ public class TelaLoginController implements Initializable {
             @Override
             public void run() {
                 lbSenha.requestFocus();
-                
+
                 //Faz o ENTER logar quando estiver no campo de usuario
-                lbSenha.setOnKeyPressed(new EventHandler<KeyEvent>()  {
+                lbSenha.setOnKeyPressed(new EventHandler<KeyEvent>() {
                     @Override
-                    public void handle(KeyEvent ke) {
-                        if (ke.getCode().equals(KeyCode.ENTER)) {
+                    public void handle(KeyEvent tecla) {
+                        if (tecla.getCode().equals(KeyCode.ENTER)) {
+                            try {
+                                botaoLogar();
+                            } catch (Exception ex) {
+                                Logger.getLogger(TelaLoginController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    }
+                }
+                );
+                lbUsuario.setOnKeyPressed(new EventHandler<KeyEvent>() {
+                    @Override
+                    public void handle(KeyEvent tecla) {
+                        if (tecla.getCode().equals(KeyCode.ENTER)) {
                             try {
                                 botaoLogar();
                             } catch (Exception ex) {
@@ -61,7 +75,6 @@ public class TelaLoginController implements Initializable {
                 );
             }
         });
-
     }
 
     public void botaoLogar() throws Exception {
@@ -76,6 +89,8 @@ public class TelaLoginController implements Initializable {
             telaPrincipalStage = new Stage();
             Scene telaPrincipalScene = new Scene(telaPrincipal);
 
+            Image icone = new Image(getClass().getResourceAsStream("/br/senac/perfumaria/gui/images/logo.png"));
+            telaPrincipalStage.getIcons().add(icone);
             //Metodo para deixar ela draggable
             telaPrincipal.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override

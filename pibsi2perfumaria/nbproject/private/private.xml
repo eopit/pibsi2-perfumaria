@@ -3,15 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/I:/PROJETO/4%20-%20Projeto%20NetBeans/pibsi2perfumaria/src/br/senac/perfumaria/model/Perfume.java</file>
-            <file>file:/I:/PROJETO/4%20-%20Projeto%20NetBeans/pibsi2perfumaria/src/br/senac/perfumaria/gui/TelaPrincipalController.java</file>
-            <file>file:/I:/PROJETO/4%20-%20Projeto%20NetBeans/pibsi2perfumaria/src/br/senac/perfumaria/mock/MockVenda.java</file>
-            <file>file:/I:/PROJETO/4%20-%20Projeto%20NetBeans/pibsi2perfumaria/src/br/senac/perfumaria/model/Venda.java</file>
-            <file>file:/I:/PROJETO/4%20-%20Projeto%20NetBeans/pibsi2perfumaria/src/br/senac/perfumaria/application/Perfumaria.java</file>
-            <file>file:/I:/PROJETO/4%20-%20Projeto%20NetBeans/pibsi2perfumaria/src/br/senac/perfumaria/gui/TelaLoginController.java</file>
-            <file>file:/I:/PROJETO/4%20-%20Projeto%20NetBeans/pibsi2perfumaria/src/br/senac/perfumaria/model/Cliente.java</file>
-            <file>file:/I:/PROJETO/4%20-%20Projeto%20NetBeans/pibsi2perfumaria/src/br/senac/perfumaria/mock/MockCliente.java</file>
-            <file>file:/I:/PROJETO/4%20-%20Projeto%20NetBeans/pibsi2perfumaria/src/br/senac/perfumaria/mock/MockPerfume.java</file>
+            <file>file:/C:/Users/Ubkit/Documents/pibsi2-perfumaria/pibsi2perfumaria/src/br/senac/perfumaria/dao/ClienteDao.java</file>
+            <file>file:/C:/Users/Ubkit/Documents/pibsi2-perfumaria/pibsi2perfumaria/src/br/senac/perfumaria/db/ConnectionUtils.java</file>
+            <file>file:/C:/Users/Ubkit/Documents/pibsi2-perfumaria/pibsi2perfumaria/src/br/senac/perfumaria/gui/TelaPrincipalController.java</file>
+            <file>file:/C:/Users/Ubkit/Documents/pibsi2-perfumaria/pibsi2perfumaria/src/br/senac/perfumaria/dao/PerfumeDao.java</file>
+            <file>file:/C:/Users/Ubkit/Documents/pibsi2-perfumaria/pibsi2perfumaria/src/br/senac/perfumaria/application/Perfumaria.java</file>
+            <file>file:/C:/Users/Ubkit/Documents/pibsi2-perfumaria/pibsi2perfumaria/src/br/senac/perfumaria/dao/VendaDao.java</file>
         </group>
     </open-files>
 </project-private>

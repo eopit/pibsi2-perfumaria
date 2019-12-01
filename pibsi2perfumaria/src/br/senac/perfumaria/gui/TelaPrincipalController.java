@@ -3,6 +3,7 @@ package br.senac.perfumaria.gui;
 
 import br.com.parg.viacep.ViaCEP;
 import br.com.parg.viacep.ViaCEPException;
+import br.senac.perfumaria.dao.PerfumeDao;
 import br.senac.perfumaria.mock.MockPerfume;
 import br.senac.perfumaria.mock.MockCliente;
 import br.senac.perfumaria.mock.MockVenda;
@@ -795,7 +796,7 @@ public class TelaPrincipalController implements Initializable {
             perfume.setData(data_Prod_Validade.getValue());
             perfume.setQtdProd(Integer.valueOf(txt_Prod_Qtd.getText()));
 
-            Boolean result = MockPerfume.inserirPerfume(perfume);
+            Boolean result = PerfumeDao.inserirPerfume(perfume);
             if (result) {
                 limparCamposProd();
                 exibeSucesso("inserir");

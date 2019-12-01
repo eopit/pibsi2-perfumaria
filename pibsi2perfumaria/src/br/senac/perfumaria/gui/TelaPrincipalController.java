@@ -699,8 +699,9 @@ public class TelaPrincipalController implements Initializable {
     private void btn_Prod_FIltrar(ActionEvent event) {
         tbv_Prod.getItems().clear();
         try {
-            tbv_Prod.setItems(FXCollections.observableArrayList(MockPerfume.listarPerfumes(txt_Prod_Filtro.getText())));
+            tbv_Prod.setItems(FXCollections.observableArrayList(PerfumeDao.listarPerfumes(txt_Prod_Filtro.getText())));
         } catch (Exception e) {
+            System.out.println("Erro ao lista");
         }
     }
 
@@ -795,8 +796,15 @@ public class TelaPrincipalController implements Initializable {
             perfume.setMl(Integer.valueOf(txt_Prod_mL.getText()));
             perfume.setData(data_Prod_Validade.getValue());
             perfume.setQtdProd(Integer.valueOf(txt_Prod_Qtd.getText()));
-
-            Boolean result = PerfumeDao.inserirPerfume(perfume);
+            //verificando se o perfume ja esta cadastrado
+            Perfume perfumeVerificado = PerfumeDao.pesquisarPerfume(perfume);
+            Boolean result = false;
+            //caso o id dele retorne null iremos inserir o perfume
+            if(perfumeVerificado.getIdProd() == null){
+                 result = PerfumeDao.inserirPerfume(perfume);
+            }else{
+                 result = false;
+            }
             if (result) {
                 limparCamposProd();
                 exibeSucesso("inserir");
@@ -816,7 +824,7 @@ public class TelaPrincipalController implements Initializable {
             perfumeEdit.setMl(Integer.valueOf(txt_Prod_mL.getText()));
             perfumeEdit.setData(data_Prod_Validade.getValue());
             perfumeEdit.setQtdProd(Integer.valueOf(txt_Prod_Qtd.getText()));
-            MockPerfume.alterarPerfume(perfumeEdit);
+            Boolean teste = PerfumeDao.atualizarPerfume(perfumeEdit);
             tbv_Prod.getItems().clear();
             perfumeEdit = null;
             editProd = false;

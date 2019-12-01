@@ -19,7 +19,15 @@ public class Perfume {
     private String marca;
     private Integer idProd;
     private Integer ml;
+    private Boolean ativo;
 
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
     public Integer getMl() {
         return ml;
     }

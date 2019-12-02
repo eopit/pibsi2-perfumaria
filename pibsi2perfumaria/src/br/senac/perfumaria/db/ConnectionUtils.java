@@ -12,7 +12,7 @@ public class ConnectionUtils {
         Properties prop = new Properties();
         
         prop.put("user", "root");
-        prop.put("password","root");
+        prop.put("password","admin");
         prop.put("serverTimezone", "UTC");
         prop.put("useSSL","false");
         

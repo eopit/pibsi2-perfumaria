@@ -72,6 +72,7 @@ public class ClienteDao {
     public static boolean pesquisarCliente(Cliente cliente) throws SQLException {
         Cliente clienteR = new Cliente();
         try {
+<<<<<<< HEAD
             String sql = "SELECT * FROM cliente WHERE CPF = ? OR RG = ?";
             conectarBD(sql);
             ps.setString(1, cliente.getCpf());
@@ -91,6 +92,25 @@ public class ClienteDao {
             return true;
         }
         return true;
+=======
+            String sql = "SELECT * FROM perfume WHERE NOME = ? AND CPF = ?";
+            conectarBD(sql);
+            ps.setString(1, cliente.getNome());
+            ps.setString(2, cliente.getCpf());
+            ResultSet result = ps.executeQuery();
+            while (result.next()) {
+                clienteR.setIdCliente(result.getInt("ID"));
+                return true;
+            }
+            result.close();
+            fechaConexaoBD();
+        } catch (Exception e) {
+            e.printStackTrace();
+            fechaConexaoBD();
+            return false;
+        }
+        return false;
+>>>>>>> 7c29292c1c200bebdbbb139a442636ab7a719eb5
     }
 
     public static List<Cliente> listarClientes(String filtro) throws SQLException {
@@ -107,7 +127,10 @@ public class ClienteDao {
                 Cliente clienteR = new Cliente();
                 clienteR.setIdCliente(result.getInt("ID"));
                 clienteR.setNomeCliente(result.getString("NOME"));
+<<<<<<< HEAD
                 clienteR.setSobrenome(result.getString("SOBRENOME"));
+=======
+>>>>>>> 7c29292c1c200bebdbbb139a442636ab7a719eb5
                 clienteR.setDataDenascimento(result.getDate("DATA_NASCIMENTO").toLocalDate());
                 clienteR.setCpf(result.getString("CPF"));
                 clienteR.setRg(result.getString("RG"));
@@ -117,7 +140,11 @@ public class ClienteDao {
                 clienteR.setEmail(result.getString("EMAIL"));
                 //enderecos
                 clienteR.setCep(result.getString("CEP"));
+<<<<<<< HEAD
                 clienteR.setLogradouro(result.getString("LOGRADOURO"));
+=======
+                clienteR.setLogradouro(result.getString("LOUGRADOURO"));
+>>>>>>> 7c29292c1c200bebdbbb139a442636ab7a719eb5
                 clienteR.setComplemento(result.getString("COMPLEMENTO"));
                 clienteR.setBairro(result.getString("BAIRRO"));
                 clienteR.setCidade(result.getString("CIDADE"));
@@ -136,8 +163,14 @@ public class ClienteDao {
 
     public static boolean atualizarCliente(Cliente cliente) throws SQLException {
         try {
+<<<<<<< HEAD
             String sql = "UPDATE cliente SET NOME = ?, SOBRENOME = ?, RG = ?, CPF = ?, DATA_NASCIMENTO = ?, GENERO = ?, ESTADO_CIVIL = ?, TELEFONE = ?, EMAIL = ? WHERE ID = ?";
             conectarBD(sql);
+=======
+            String sql = "UPDATE cliente SET NOME = ?, SOBRENOME = ?, RG = ?, CPF = ?, DATA_NASCIMENTO = ?, GENERO = ?, ESTADO_CIVIL = ?, TELEFONE = ?, EMAIL = ?, CEP = ?, LOGRADOURO = ?, COMPLEMENTO = ?, BAIRRO = ?, CIDADE = ?, UF = ? WHERE ID = ?";
+            conectarBD(sql);
+
+>>>>>>> 7c29292c1c200bebdbbb139a442636ab7a719eb5
             ps.setString(1, cliente.getNome());
             ps.setString(2, cliente.getSobrenome());
             ps.setString(3, cliente.getRg());
@@ -147,6 +180,7 @@ public class ClienteDao {
             ps.setString(7, cliente.getEstadoCivil());
             ps.setString(8, cliente.getTelefone());
             ps.setString(9, cliente.getEmail());
+<<<<<<< HEAD
             ps.setInt(10, cliente.getIdCliente());
             ps.execute();
             fechaConexaoBD();
@@ -170,6 +204,15 @@ public class ClienteDao {
             ps.setString(5, cliente.getCidade());
             ps.setString(6, cliente.getUf());
             ps.setInt(7, ID);
+=======
+            ps.setString(10, cliente.getCep());
+            ps.setString(11, cliente.getLogradouro());
+            ps.setString(12, cliente.getComplemento());
+            ps.setString(13, cliente.getBairro());
+            ps.setString(14, cliente.getCidade());
+            ps.setString(15, cliente.getUf());
+            ps.setInt(16, cliente.getIdCliente());
+>>>>>>> 7c29292c1c200bebdbbb139a442636ab7a719eb5
             ps.execute();
             fechaConexaoBD();
             return true;

@@ -3,6 +3,7 @@ package br.senac.perfumaria.gui;
 
 import br.com.parg.viacep.ViaCEP;
 import br.com.parg.viacep.ViaCEPException;
+import br.senac.perfumaria.dao.ClienteDao;
 import br.senac.perfumaria.dao.PerfumeDao;
 import br.senac.perfumaria.mock.MockPerfume;
 import br.senac.perfumaria.mock.MockCliente;
@@ -16,6 +17,7 @@ import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -574,10 +576,14 @@ public class TelaPrincipalController implements Initializable {
                 cliente.setCidade(lbCidade.getText());
                 cliente.setUf(lbUF.getText());
 
-                //insere na classe mock
-                inserirCliente(cliente);
-
-                btProcurarNaTable(event);
+                try {
+                    //insere na classe mock
+                    ClienteDao.inserirCliente(cliente);
+                    btProcurarNaTable(event);
+//                inserirCliente(cliente);
+                } catch (SQLException ex) {
+                    Logger.getLogger(TelaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
             } else {
 
@@ -800,10 +806,10 @@ public class TelaPrincipalController implements Initializable {
             Perfume perfumeVerificado = PerfumeDao.pesquisarPerfume(perfume);
             Boolean result = false;
             //caso o id dele retorne null iremos inserir o perfume
-            if(perfumeVerificado.getIdProd() == null){
-                 result = PerfumeDao.inserirPerfume(perfume);
-            }else{
-                 result = false;
+            if (perfumeVerificado.getIdProd() == null) {
+                result = PerfumeDao.inserirPerfume(perfume);
+            } else {
+                result = false;
             }
             if (result) {
                 limparCamposProd();

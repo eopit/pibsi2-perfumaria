@@ -1,31 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.senac.perfumaria.dao;
 
 import br.senac.perfumaria.db.ConnectionUtils;
 import br.senac.perfumaria.model.Perfume;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
-import java.time.ZoneId;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.ResultSet;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Ubkit
- */
 public class PerfumeDao {
 
     public static Connection con;
     public static PreparedStatement ps;
-    public static boolean inserirPerfume(Perfume perfume)throws SQLException {
+    public static boolean inserirPerfume(Perfume perfume) throws SQLException {
         try {           
             String sql = "INSERT INTO perfume (NOME,MARCA,ML,QTD_PROD,PRECO,VALIDADE) VALUES (?,?,?,?,?,?)";
             conectarBD(sql);

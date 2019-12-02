@@ -67,7 +67,7 @@ public class PerfumeDao {
     public static List<Perfume> listarPerfumes(String filtro) throws SQLException{
         List<Perfume> listaDePerfumes = new ArrayList<Perfume>();
         try {
-            String sql = "SELECT * FROM perfume WHERE NOME LIKE ? OR MARCA LIKE ? OR PRECO LIKE ?";
+            String sql = "SELECT * FROM perfume WHERE (NOME LIKE ? OR MARCA LIKE ? OR PRECO = ?) AND ATIVO = ?";
             conectarBD(sql);
             ps.setString(1, '%'+filtro+'%');
             ps.setString(2, '%'+filtro+'%');
@@ -84,7 +84,8 @@ public class PerfumeDao {
             }else{
                 System.out.println(filtro);
                 ps.setInt(3,0); 
-            }  
+            }
+            ps.setBoolean(4, true);
             ResultSet result =  ps.executeQuery();
             while(result.next()){
                     Perfume perfumeR = new Perfume();
@@ -109,7 +110,7 @@ public class PerfumeDao {
     
     public static boolean atualizarPerfume(Perfume perfume) throws SQLException{
         try {
-            String sql = "UPDATE perfume SET NOME = ?, MARCA = ?, ML = ?, QTD_PROD = ?, PRECO = ?, VALIDADE = ?, ATIVO = ? WHERE ID = ?";
+            String sql = "UPDATE perfume SET NOME = ?, MARCA = ?, ML = ?, QTD_PROD = ?, PRECO = ?, VALIDADE = ? WHERE ID = ?";
             conectarBD(sql);
             ps.setString(1, perfume.getNome());
             ps.setString(2, perfume.getMarca());
@@ -117,8 +118,7 @@ public class PerfumeDao {
             ps.setInt(4, perfume.getQtdProd());
             ps.setDouble(5, perfume.getPreco());
             ps.setDate(6, Date.valueOf(perfume.getData()));
-            ps.setBoolean(7, true);
-            ps.setInt(8, perfume.getIdProd());
+            ps.setInt(7, perfume.getIdProd());
             ps.execute();
             fechaConexaoBD();
             return true;
@@ -128,6 +128,18 @@ public class PerfumeDao {
             return false;
         }
         
+    }
+    
+    public static void desativarProd(Perfume perfume) throws SQLException{
+        try {
+           String sql = "UPDATE perfume SET ATIVO = 0 WHERE ID = ?";
+           conectarBD(sql);
+           ps.setInt(1, perfume.getIdProd());
+           ps.execute();
+           fechaConexaoBD();
+        } catch (Exception e) {
+          fechaConexaoBD();
+        }
     }
     
     public static void conectarBD(String sql) throws SQLException{

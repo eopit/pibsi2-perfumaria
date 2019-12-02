@@ -441,7 +441,12 @@ public class TelaPrincipalController implements Initializable {
     private void btProcurarNaTable(ActionEvent event) {
         tabelaCliente.getItems().clear();
 
-        List resultado = listarNaTabela();
+        List resultado = null;
+        try {
+            resultado = ClienteDao.listarClientes("");
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         if (resultado != null) {
             tabelaCliente.setItems(FXCollections.observableArrayList(resultado));
@@ -578,9 +583,16 @@ public class TelaPrincipalController implements Initializable {
 
                 try {
                     //insere na classe mock
-                    ClienteDao.inserirCliente(cliente);
-                    btProcurarNaTable(event);
-//                inserirCliente(cliente);
+                    if (ClienteDao.pesquisarCliente(cliente)) {
+                        ClienteDao.inserirCliente(cliente);
+                        btProcurarNaTable(event);
+                        limparCampoCliente();
+                    } else {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Erro ao cadastrar");
+                        alert.setContentText("O cliente " + cliente.getNome() + " " + cliente.getSobrenome() + " já foi inserido!");
+                        alert.showAndWait();
+                    }
                 } catch (SQLException ex) {
                     Logger.getLogger(TelaPrincipalController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -604,9 +616,14 @@ public class TelaPrincipalController implements Initializable {
                 clienteEdicao.setCidade(lbCidade.getText());
                 clienteEdicao.setUf(lbUF.getText());
 
-                //Manda pro mock atualizar
-                atualizarCliente(clienteEdicao);
-
+                try {
+                    //Manda pro mock atualizar
+//                atualizarCliente(clienteEdicao);;
+                    ClienteDao.atualizarCliente(clienteEdicao);
+                    btProcurarNaTable(event);
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
                 limparCampoCliente();
             }
         } else { //SE TIVER CAMPO VAZIO
@@ -850,11 +867,11 @@ public class TelaPrincipalController implements Initializable {
 
         if (result.get() == ButtonType.OK) {
             try {
-                MockPerfume.excluirPerfume(perfume);
+                PerfumeDao.desativarProd(perfume);
                 tbv_Prod.getItems().clear();
                 tbv_Prod.setItems(
                         FXCollections.observableArrayList(
-                                MockPerfume.listarPerfumes(txt_Prod_Filtro.getText())
+                                PerfumeDao.listarPerfumes(txt_Prod_Filtro.getText())
                         ));
                 exibeSucesso("excluir");
                 editProd = false;
@@ -1199,7 +1216,6 @@ public class TelaPrincipalController implements Initializable {
                 return sp;
             }
         });
-
     }
 
     private List listarRelatorio() {

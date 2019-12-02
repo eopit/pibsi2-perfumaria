@@ -850,11 +850,11 @@ public class TelaPrincipalController implements Initializable {
 
         if (result.get() == ButtonType.OK) {
             try {
-                MockPerfume.excluirPerfume(perfume);
+                PerfumeDao.desativarProd(perfume);
                 tbv_Prod.getItems().clear();
                 tbv_Prod.setItems(
                         FXCollections.observableArrayList(
-                                MockPerfume.listarPerfumes(txt_Prod_Filtro.getText())
+                                PerfumeDao.listarPerfumes(txt_Prod_Filtro.getText())
                         ));
                 exibeSucesso("excluir");
                 editProd = false;

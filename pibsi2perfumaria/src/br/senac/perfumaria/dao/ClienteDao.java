@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClienteDao {
 
@@ -67,99 +69,99 @@ public class ClienteDao {
         }
     }
 
-//    public static Perfume pesquisarPerfume(Perfume perfume) throws SQLException {
-//        Perfume perfumeR = new Perfume();
-//        try {
-//            String sql = "SELECT * FROM perfume WHERE NOME = ? AND ML = ?";
-//            conectarBD(sql);
-//            ps.setString(1, perfume.getNome());
-//            ps.setInt(2, perfume.getMl());
-//            ResultSet result = ps.executeQuery();
-//            while (result.next()) {
-//                perfumeR.setIdProd(result.getInt("ID"));
-//                System.out.println(perfume.getIdProd());
-//                perfumeR.setNome(result.getString("NOME"));
-//                perfumeR.setMarca(result.getString("MARCA"));
-//                perfumeR.setMl(result.getInt("ML"));
-//                perfumeR.setQtdProd(result.getInt("QTD_PROD"));
-//                perfumeR.setPreco(result.getDouble("PRECO"));
-//                perfumeR.setData(result.getDate("VALIDADE").toLocalDate());
-//            }
-//            result.close();
-//            fechaConexaoBD();
-//            return perfumeR;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            fechaConexaoBD();
-//            return perfumeR;
-//        }
-//    }
-//
-//    public static List<Perfume> listarPerfumes(String filtro) throws SQLException {
-//        List<Perfume> listaDePerfumes = new ArrayList<Perfume>();
-//        try {
-//            String sql = "SELECT * FROM perfume WHERE NOME LIKE ? OR MARCA LIKE ? OR PRECO LIKE ?";
-//            conectarBD(sql);
-//            ps.setString(1, '%' + filtro + '%');
-//            ps.setString(2, '%' + filtro + '%');
-//            //vamos tentar converter o o filtro em int 
-//            boolean converteu = false;
-//            try {
-//                int fconvert = Integer.valueOf(filtro);
-//                converteu = true;
-//            } catch (Exception e) {
-//                converteu = false;
-//            }
-//            if (converteu) {
-//                ps.setInt(3, Integer.valueOf(filtro));
-//            } else {
-//                System.out.println(filtro);
-//                ps.setInt(3, 0);
-//            }
-//            ResultSet result = ps.executeQuery();
-//            while (result.next()) {
-//                Perfume perfumeR = new Perfume();
-//                perfumeR.setIdProd(result.getInt("ID"));
-//                perfumeR.setNome(result.getString("NOME"));
-//                perfumeR.setMarca(result.getString("MARCA"));
-//                perfumeR.setMl(result.getInt("ML"));
-//                perfumeR.setQtdProd(result.getInt("QTD_PROD"));
-//                perfumeR.setPreco(result.getDouble("PRECO"));
-//                perfumeR.setData(result.getDate("VALIDADE").toLocalDate());
-//                listaDePerfumes.add(perfumeR);
-//            }
-//            result.close();
-//            fechaConexaoBD();
-//            return listaDePerfumes;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            fechaConexaoBD();
-//            return listaDePerfumes;
-//        }
-//    }
-//
-//    public static boolean atualizarPerfume(Perfume perfume) throws SQLException {
-//        try {
-//            String sql = "UPDATE perfume SET NOME = ?, MARCA = ?, ML = ?, QTD_PROD = ?, PRECO = ?, VALIDADE = ?, ATIVO = ? WHERE ID = ?";
-//            conectarBD(sql);
-//            ps.setString(1, perfume.getNome());
-//            ps.setString(2, perfume.getMarca());
-//            ps.setInt(3, perfume.getMl());
-//            ps.setInt(4, perfume.getQtdProd());
-//            ps.setDouble(5, perfume.getPreco());
-//            ps.setDate(6, Date.valueOf(perfume.getData()));
-//            ps.setBoolean(7, true);
-//            ps.setInt(8, perfume.getIdProd());
-//            ps.execute();
-//            fechaConexaoBD();
-//            return true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            fechaConexaoBD();
-//            return false;
-//        }
-//
-//    }
+    public static boolean pesquisarCliente(Cliente cliente) throws SQLException {
+        Cliente clienteR = new Cliente();
+        try {
+            String sql = "SELECT * FROM perfume WHERE NOME = ? AND CPF = ?";
+            conectarBD(sql);
+            ps.setString(1, cliente.getNome());
+            ps.setString(2, cliente.getCpf());
+            ResultSet result = ps.executeQuery();
+            while (result.next()) {
+                clienteR.setIdCliente(result.getInt("ID"));
+                return true;
+            }
+            result.close();
+            fechaConexaoBD();
+        } catch (Exception e) {
+            e.printStackTrace();
+            fechaConexaoBD();
+            return false;
+        }
+        return false;
+    }
+
+    public static List<Cliente> listarClientes(String filtro) throws SQLException {
+        List<Cliente> listaDeClientes = new ArrayList<Cliente>();
+        try {
+            String sql = "SELECT * from cliente inner join endereco_cli on cliente.ID = endereco_cli.ID_CLI WHERE NOME LIKE ? OR CPF LIKE ?";
+            conectarBD(sql);
+            ps.setString(1, '%' + filtro + '%');
+            ps.setString(2, '%' + filtro + '%');
+            //vamos tentar converter o o filtro em int 
+
+            ResultSet result = ps.executeQuery();
+            while (result.next()) {
+                Cliente clienteR = new Cliente();
+                clienteR.setIdCliente(result.getInt("ID"));
+                clienteR.setNomeCliente(result.getString("NOME"));
+                clienteR.setDataDenascimento(result.getDate("DATA_NASCIMENTO").toLocalDate());
+                clienteR.setCpf(result.getString("CPF"));
+                clienteR.setRg(result.getString("RG"));
+                clienteR.setGenero(result.getString("GENERO"));
+                clienteR.setEstadoCivil(result.getString("ESTADO_CIVIL"));
+                clienteR.setTelefone(result.getString("TELEFONE"));
+                clienteR.setEmail(result.getString("EMAIL"));
+                //enderecos
+                clienteR.setCep(result.getString("CEP"));
+                clienteR.setLogradouro(result.getString("LOUGRADOURO"));
+                clienteR.setComplemento(result.getString("COMPLEMENTO"));
+                clienteR.setBairro(result.getString("BAIRRO"));
+                clienteR.setCidade(result.getString("CIDADE"));
+                clienteR.setUf(result.getString("UF"));
+                listaDeClientes.add(clienteR);
+            }
+            result.close();
+            fechaConexaoBD();
+            return listaDeClientes;
+        } catch (Exception e) {
+            e.printStackTrace();
+            fechaConexaoBD();
+            return listaDeClientes;
+        }
+    }
+
+    public static boolean atualizarCliente(Cliente cliente) throws SQLException {
+        try {
+            String sql = "UPDATE cliente SET NOME = ?, SOBRENOME = ?, RG = ?, CPF = ?, DATA_NASCIMENTO = ?, GENERO = ?, ESTADO_CIVIL = ?, TELEFONE = ?, EMAIL = ?, CEP = ?, LOGRADOURO = ?, COMPLEMENTO = ?, BAIRRO = ?, CIDADE = ?, UF = ? WHERE ID = ?";
+            conectarBD(sql);
+
+            ps.setString(1, cliente.getNome());
+            ps.setString(2, cliente.getSobrenome());
+            ps.setString(3, cliente.getRg());
+            ps.setString(4, cliente.getCpf());
+            ps.setDate(5, Date.valueOf(cliente.getDataDenascimento()));
+            ps.setString(6, cliente.getGenero());
+            ps.setString(7, cliente.getEstadoCivil());
+            ps.setString(8, cliente.getTelefone());
+            ps.setString(9, cliente.getEmail());
+            ps.setString(10, cliente.getCep());
+            ps.setString(11, cliente.getLogradouro());
+            ps.setString(12, cliente.getComplemento());
+            ps.setString(13, cliente.getBairro());
+            ps.setString(14, cliente.getCidade());
+            ps.setString(15, cliente.getUf());
+            ps.setInt(16, cliente.getIdCliente());
+            ps.execute();
+            fechaConexaoBD();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            fechaConexaoBD();
+            return false;
+        }
+    }
+
     public static void conectarBD(String sql) throws SQLException {
         try {
             con = null;
@@ -181,6 +183,18 @@ public class ClienteDao {
             System.out.println("conexao do banco fechada");
         } catch (Exception e) {
             System.out.println("Erro ao fechar conexao do banco");
+        }
+    }
+
+    public static void desativarCliente(Cliente cliente) throws SQLException {
+        try {
+            String sql = "UPDATE cliente SET ATIVO = 0 WHERE ID = ?";
+            conectarBD(sql);
+            ps.setInt(1, cliente.getIdCliente());
+            ps.execute();
+            fechaConexaoBD();
+        } catch (Exception e) {
+            fechaConexaoBD();
         }
     }
 }

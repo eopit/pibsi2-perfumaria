@@ -21,3 +21,8 @@ You should import **fontawesomefx** and **jfoeni**x ***.jar** in SceneBuilder - 
 ### Dashboard
 ![Screenshot_9](https://user-images.githubusercontent.com/47369865/74600536-da2b0380-5071-11ea-8f91-f876a23ea3bf.png)
 
+# Database
+  * Database: MYSQL.
+ 
+# CEP API
+  * [ViaCEP](https://viacep.com.br/), thanks for the support, its one of the bests APIs to get address info.

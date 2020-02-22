@@ -1,5 +1,5 @@
 # pibsi2-perfumaria
-Projeto Integrador do segundo semestre de BSI no SENAC junto com [Rafael Narbutis](https://github.com/rafaelnarbutis).
+:rocket: Projeto Integrador do segundo semestre de BSI no SENAC junto com [Rafael Narbutis](https://github.com/rafaelnarbutis).
 
 ### Pre requirements to open fxml files
 You should import **fontawesomefx** and **jfoeni**x ***.jar** in SceneBuilder - Java 8.
